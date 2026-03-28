@@ -1,0 +1,402 @@
+{
+  "agePrevalence": [
+    {
+      "label": "18-39",
+      "value": 0.0303
+    },
+    {
+      "label": "40-64",
+      "value": 0.1089
+    },
+    {
+      "label": "65+",
+      "value": 0.1966
+    }
+  ],
+  "sexPrevalence": [
+    {
+      "label": "Female",
+      "value": 0.1297
+    },
+    {
+      "label": "Male",
+      "value": 0.1516
+    }
+  ],
+  "incomePrevalence": [
+    {
+      "label": "Low",
+      "value": 0.2404
+    },
+    {
+      "label": "Mid",
+      "value": 0.1679
+    },
+    {
+      "label": "High",
+      "value": 0.0933
+    }
+  ],
+  "subgroups": [
+    {
+      "ageGroup": "18-39",
+      "sex": "Female",
+      "incomeBand": "Low",
+      "count": 3308,
+      "diabetesRate": 0.0692,
+      "features": {
+        "BMI": 29.77,
+        "GenHlth": 2.727,
+        "DiffWalk": 0.134,
+        "Sex": 0,
+        "Education": 4.552,
+        "Income": 2.088,
+        "CardioRisk": 0.386,
+        "HealthBurden": 12.344,
+        "LifestyleScore": 1.637,
+        "HealthcareAccess": 1.757,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "18-39",
+      "sex": "Female",
+      "incomeBand": "Mid",
+      "count": 6633,
+      "diabetesRate": 0.0403,
+      "features": {
+        "BMI": 28.79,
+        "GenHlth": 2.393,
+        "DiffWalk": 0.057,
+        "Sex": 0,
+        "Education": 5.032,
+        "Income": 5.171,
+        "CardioRisk": 0.278,
+        "HealthBurden": 7.928,
+        "LifestyleScore": 1.885,
+        "HealthcareAccess": 1.811,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "18-39",
+      "sex": "Female",
+      "incomeBand": "High",
+      "count": 10582,
+      "diabetesRate": 0.0184,
+      "features": {
+        "BMI": 26.591,
+        "GenHlth": 2.011,
+        "DiffWalk": 0.022,
+        "Sex": 0,
+        "Education": 5.568,
+        "Income": 7.677,
+        "CardioRisk": 0.22,
+        "HealthBurden": 5.222,
+        "LifestyleScore": 2.188,
+        "HealthcareAccess": 1.911,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "18-39",
+      "sex": "Male",
+      "incomeBand": "Low",
+      "count": 1871,
+      "diabetesRate": 0.0545,
+      "features": {
+        "BMI": 28.468,
+        "GenHlth": 2.551,
+        "DiffWalk": 0.112,
+        "Sex": 1,
+        "Education": 4.563,
+        "Income": 2.157,
+        "CardioRisk": 0.455,
+        "HealthBurden": 10.145,
+        "LifestyleScore": 1.549,
+        "HealthcareAccess": 1.692,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "18-39",
+      "sex": "Male",
+      "incomeBand": "Mid",
+      "count": 5319,
+      "diabetesRate": 0.0305,
+      "features": {
+        "BMI": 28.391,
+        "GenHlth": 2.33,
+        "DiffWalk": 0.04,
+        "Sex": 1,
+        "Education": 4.832,
+        "Income": 5.265,
+        "CardioRisk": 0.379,
+        "HealthBurden": 6.043,
+        "LifestyleScore": 1.68,
+        "HealthcareAccess": 1.743,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "18-39",
+      "sex": "Male",
+      "incomeBand": "High",
+      "count": 10531,
+      "diabetesRate": 0.0193,
+      "features": {
+        "BMI": 27.995,
+        "GenHlth": 2.05,
+        "DiffWalk": 0.016,
+        "Sex": 1,
+        "Education": 5.365,
+        "Income": 7.685,
+        "CardioRisk": 0.369,
+        "HealthBurden": 3.874,
+        "LifestyleScore": 1.926,
+        "HealthcareAccess": 1.886,
+        "AgeGroup": 0
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Female",
+      "incomeBand": "Low",
+      "count": 7741,
+      "diabetesRate": 0.2315,
+      "features": {
+        "BMI": 31.28,
+        "GenHlth": 3.426,
+        "DiffWalk": 0.469,
+        "Sex": 0,
+        "Education": 4.341,
+        "Income": 2.024,
+        "CardioRisk": 1.111,
+        "HealthBurden": 20.938,
+        "LifestyleScore": 1.277,
+        "HealthcareAccess": 1.799,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Female",
+      "incomeBand": "Mid",
+      "count": 13124,
+      "diabetesRate": 0.1364,
+      "features": {
+        "BMI": 29.876,
+        "GenHlth": 2.723,
+        "DiffWalk": 0.199,
+        "Sex": 0,
+        "Education": 4.816,
+        "Income": 5.215,
+        "CardioRisk": 0.792,
+        "HealthBurden": 10.795,
+        "LifestyleScore": 1.644,
+        "HealthcareAccess": 1.847,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Female",
+      "incomeBand": "High",
+      "count": 31473,
+      "diabetesRate": 0.057,
+      "features": {
+        "BMI": 27.443,
+        "GenHlth": 2.123,
+        "DiffWalk": 0.063,
+        "Sex": 0,
+        "Education": 5.449,
+        "Income": 7.72,
+        "CardioRisk": 0.552,
+        "HealthBurden": 5.445,
+        "LifestyleScore": 2.087,
+        "HealthcareAccess": 1.941,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Male",
+      "incomeBand": "Low",
+      "count": 4493,
+      "diabetesRate": 0.2348,
+      "features": {
+        "BMI": 30.122,
+        "GenHlth": 3.382,
+        "DiffWalk": 0.418,
+        "Sex": 1,
+        "Education": 4.298,
+        "Income": 2.063,
+        "CardioRisk": 1.257,
+        "HealthBurden": 18.912,
+        "LifestyleScore": 1.052,
+        "HealthcareAccess": 1.733,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Male",
+      "incomeBand": "Mid",
+      "count": 9203,
+      "diabetesRate": 0.1505,
+      "features": {
+        "BMI": 29.83,
+        "GenHlth": 2.768,
+        "DiffWalk": 0.174,
+        "Sex": 1,
+        "Education": 4.615,
+        "Income": 5.261,
+        "CardioRisk": 0.959,
+        "HealthBurden": 8.902,
+        "LifestyleScore": 1.4,
+        "HealthcareAccess": 1.787,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "40-64",
+      "sex": "Male",
+      "incomeBand": "High",
+      "count": 27088,
+      "diabetesRate": 0.086,
+      "features": {
+        "BMI": 29.068,
+        "GenHlth": 2.211,
+        "DiffWalk": 0.044,
+        "Sex": 1,
+        "Education": 5.323,
+        "Income": 7.754,
+        "CardioRisk": 0.783,
+        "HealthBurden": 3.846,
+        "LifestyleScore": 1.855,
+        "HealthcareAccess": 1.928,
+        "AgeGroup": 1
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Female",
+      "incomeBand": "Low",
+      "count": 14071,
+      "diabetesRate": 0.2869,
+      "features": {
+        "BMI": 28.923,
+        "GenHlth": 3.257,
+        "DiffWalk": 0.467,
+        "Sex": 0,
+        "Education": 4.203,
+        "Income": 2.24,
+        "CardioRisk": 1.475,
+        "HealthBurden": 13.535,
+        "LifestyleScore": 1.455,
+        "HealthcareAccess": 1.936,
+        "AgeGroup": 2
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Female",
+      "incomeBand": "Mid",
+      "count": 29283,
+      "diabetesRate": 0.1852,
+      "features": {
+        "BMI": 28.065,
+        "GenHlth": 2.688,
+        "DiffWalk": 0.269,
+        "Sex": 0,
+        "Education": 4.794,
+        "Income": 5.128,
+        "CardioRisk": 1.266,
+        "HealthBurden": 7.877,
+        "LifestyleScore": 1.745,
+        "HealthcareAccess": 1.959,
+        "AgeGroup": 2
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Female",
+      "incomeBand": "High",
+      "count": 25759,
+      "diabetesRate": 0.112,
+      "features": {
+        "BMI": 27.03,
+        "GenHlth": 2.236,
+        "DiffWalk": 0.134,
+        "Sex": 0,
+        "Education": 5.412,
+        "Income": 7.576,
+        "CardioRisk": 1.028,
+        "HealthBurden": 5.133,
+        "LifestyleScore": 2.049,
+        "HealthcareAccess": 1.974,
+        "AgeGroup": 2
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Male",
+      "incomeBand": "Low",
+      "count": 6104,
+      "diabetesRate": 0.2985,
+      "features": {
+        "BMI": 28.367,
+        "GenHlth": 3.32,
+        "DiffWalk": 0.395,
+        "Sex": 1,
+        "Education": 4.221,
+        "Income": 2.287,
+        "CardioRisk": 1.47,
+        "HealthBurden": 13.2,
+        "LifestyleScore": 1.166,
+        "HealthcareAccess": 1.908,
+        "AgeGroup": 2
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Male",
+      "incomeBand": "Mid",
+      "count": 18926,
+      "diabetesRate": 0.2547,
+      "features": {
+        "BMI": 28.561,
+        "GenHlth": 2.843,
+        "DiffWalk": 0.239,
+        "Sex": 1,
+        "Education": 4.77,
+        "Income": 5.256,
+        "CardioRisk": 1.416,
+        "HealthBurden": 7.565,
+        "LifestyleScore": 1.398,
+        "HealthcareAccess": 1.945,
+        "AgeGroup": 2
+      }
+    },
+    {
+      "ageGroup": "65+",
+      "sex": "Male",
+      "incomeBand": "High",
+      "count": 28171,
+      "diabetesRate": 0.1795,
+      "features": {
+        "BMI": 28.263,
+        "GenHlth": 2.354,
+        "DiffWalk": 0.116,
+        "Sex": 1,
+        "Education": 5.461,
+        "Income": 7.642,
+        "CardioRisk": 1.276,
+        "HealthBurden": 4.266,
+        "LifestyleScore": 1.779,
+        "HealthcareAccess": 1.971,
+        "AgeGroup": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team 111 — Diabetes Probability Predictor</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Team 111 · CSE6242</div>
+          <h1>Interactive Diabetes Probability Predictor</h1>
+          <p class="lede">
+            A presentation-ready risk estimator using the current JavaScript +
+            D3 implementation.
+          </p>
+        </div>
+        <div class="meta" id="modelMetrics"></div>
+      </header>
+
+      <main class="layout predictor-layout">
+        <section class="card form-panel">
+          <div class="section-head stacked section-head-compact">
+            <div>
+              <h2>1. Profile inputs</h2>
+              <p>
+                Enter the person’s health profile using clear, everyday
+                questions.
+              </p>
+            </div>
+            <button id="resetDefaults" class="ghost-btn">Reset</button>
+          </div>
+
+          <div id="rawInputs" class="raw-inputs"></div>
+        </section>
+
+        <section class="results-column">
+          <section class="card risk-panel polished-panel">
+            <div class="section-head stacked-sm">
+              <div>
+                <h2>2. Predicted probability</h2>
+                <p>The estimate updates instantly as the profile changes.</p>
+              </div>
+            </div>
+
+            <div class="risk-hero ring-hero">
+              <div class="ring-card">
+                <div class="gauge-wrap ring-wrap">
+                  <svg id="gaugeChart"></svg>
+                  <div class="gauge-center">
+                    <div class="risk-value" id="riskValue">--</div>
+                    <div class="risk-label-pill" id="riskLevel">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="risk-summary simple-summary">
+                <div class="summary-card full-span emphasis-card">
+                  <div class="summary-label">Risk interpretation</div>
+                  <div class="summary-note" id="riskExplanation">
+                    Complete the profile to view an estimate.
+                  </div>
+                </div>
+                <div class="risk-scale polished-scale">
+                  <div class="scale-item">
+                    <span class="dot low"></span> Low: &lt; 30%
+                  </div>
+                  <div class="scale-item">
+                    <span class="dot mid"></span> Medium: 30%–60%
+                  </div>
+                  <div class="scale-item">
+                    <span class="dot high"></span> High: &gt; 60%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card recommendation-panel polished-panel">
+            <div class="section-head stacked-sm">
+              <div>
+                <h2>3. Recommendations</h2>
+                <p>
+                  Helpful next-step suggestions based on the current profile.
+                </p>
+              </div>
+            </div>
+            <div id="recommendationList" class="recommendation-list"></div>
+          </section>
+        </section>
+      </main>
+
+      <footer>Team 111 - Diabetes Probability Predictor</footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
