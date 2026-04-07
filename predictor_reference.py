@@ -5,14 +5,6 @@ ROOT = pathlib.Path(__file__).resolve().parent
 META = json.loads((ROOT / "data" / "model_meta.json").read_text())
 CASES = json.loads((ROOT / "data" / "validation_cases.json").read_text())
 
-RAW_KEYS = [
-    "HighBP", "HighChol", "CholCheck", "BMI", "Smoker", "Stroke",
-    "HeartDiseaseorAttack", "PhysActivity", "Fruits", "Veggies",
-    "HvyAlcoholConsump", "AnyHealthcare", "NoDocbcCost", "GenHlth",
-    "MentHlth", "PhysHlth", "DiffWalk", "Sex", "Age", "Education", "Income"
-]
-
-
 def engineer_features(raw: dict) -> dict:
     return {
         "BMI": raw["BMI"],
@@ -22,38 +14,38 @@ def engineer_features(raw: dict) -> dict:
         "Education": raw["Education"],
         "Income": raw["Income"],
         "CardioRisk": raw["HighBP"] + raw["HighChol"] + raw["HeartDiseaseorAttack"],
-        "HealthBurden": raw["MentHlth"] + raw["PhysHlth"],
-        "LifestyleScore": raw["PhysActivity"] + raw["Fruits"] + raw["Veggies"] - raw["Smoker"],
-        "HealthcareAccess": raw["AnyHealthcare"] + raw["CholCheck"],
         "AgeGroup": 0 if raw["Age"] <= 4 else (1 if raw["Age"] <= 8 else 2),
     }
 
-
-def compute_logit(raw: dict):
+def build_patient_data(raw: dict) -> dict:
     engineered = engineer_features(raw)
+    patient = dict(META["defaults"])
+    patient["CardioRisk"] = engineered["CardioRisk"]
+    patient["AgeGroup"] = engineered["AgeGroup"]
+    for feature in META["features"]:
+        if feature in raw:
+            patient[feature] = raw[feature]
+    return patient
+
+def predict_probability(raw: dict):
+    patient = build_patient_data(raw)
     logit = META["intercept"]
     contributions = {}
     for feature in META["features"]:
-        scaled = (engineered[feature] - META["means"][feature]) / META["scales"][feature]
+        scaled = (patient[feature] - META["means"][feature]) / META["scales"][feature]
         contrib = scaled * META["coefficients"][feature]
         contributions[feature] = contrib
         logit += contrib
-    return logit, engineered, contributions
-
-
-def predict_probability(raw: dict):
-    logit, engineered, contributions = compute_logit(raw)
     probability = 1.0 / (1.0 + math.exp(-logit))
     return {
+        "patient_data": patient,
         "probability": probability,
         "logit": logit,
-        "engineered": engineered,
         "contributions": contributions,
     }
 
-
 def run_validation():
-    print("Validating bundled browser model against bundled Python reference...\n")
+    print("Validating refined browser model against bundled Python reference...\n")
     all_ok = True
     for case in CASES:
         result = predict_probability(case["raw_input"])
@@ -64,7 +56,6 @@ def run_validation():
         print(f"  actual:   {result['probability']:.15f}")
     print("\nResult:", "PASS" if all_ok else "FAIL")
     return 0 if all_ok else 1
-
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
