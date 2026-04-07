@@ -7,9 +7,6 @@
     "Education",
     "Income",
     "CardioRisk",
-    "HealthBurden",
-    "LifestyleScore",
-    "HealthcareAccess",
     "AgeGroup"
   ],
   "means": {
@@ -20,9 +17,6 @@
     "Education": 4.979436645803714,
     "Income": 5.891142233044085,
     "CardioRisk": 0.998545585279362,
-    "HealthBurden": 8.196607455101073,
-    "LifestyleScore": 1.6749573752989175,
-    "HealthcareAccess": 1.9056482495274514,
     "AgeGroup": 1.339777425522527
   },
   "scales": {
@@ -33,42 +27,37 @@
     "Education": 0.9929656701452464,
     "Income": 2.0924135823300554,
     "CardioRisk": 0.9171575524862731,
-    "HealthBurden": 13.75039064313823,
-    "LifestyleScore": 1.0524032051601901,
-    "HealthcareAccess": 0.31661367340080415,
     "AgeGroup": 0.7261948978463795
   },
   "coefficients": {
-    "GenHlth": 0.570528,
-    "CardioRisk": 0.524765,
-    "BMI": 0.47187,
-    "AgeGroup": 0.446179,
-    "HealthcareAccess": 0.153229,
-    "Sex": 0.125966,
-    "Income": -0.121266,
-    "HealthBurden": -0.091794,
-    "DiffWalk": 0.049831,
-    "Education": -0.040011,
-    "LifestyleScore": 0.00869
+    "BMI": 0.475378,
+    "GenHlth": 0.530137,
+    "DiffWalk": 0.030101,
+    "Sex": 0.124197,
+    "Education": -0.036769,
+    "Income": -0.09742,
+    "CardioRisk": 0.52928,
+    "AgeGroup": 0.478296
   },
-  "intercept": -0.5196734393676253,
+  "intercept": -0.5077572296300207,
   "defaults": {
-    "BMI": 28.687507081412274,
-    "GenHlth": 2.6018198140094304,
-    "DiffWalk": 0.18575089116849838,
-    "Sex": 0.43908678107323706,
-    "Education": 4.97974062421015,
-    "Income": 5.888614832181424,
-    "CardioRisk": 0.9993201844217645,
-    "HealthBurden": 8.191084828782346,
-    "LifestyleScore": 1.6745034295824364,
-    "HealthcareAccess": 1.905492561248769,
-    "AgeGroup": 1.3403740728797162
+    "BMI": 28.676237478142927,
+    "GenHlth": 2.6002483944241988,
+    "DiffWalk": 0.18550052021200683,
+    "Sex": 0.4379313538040843,
+    "Education": 4.979436645803714,
+    "Income": 5.891142233044085,
+    "CardioRisk": 0.998545585279362,
+    "AgeGroup": 1.339777425522527
   },
   "metrics": {
-    "accuracy": 0.7177,
-    "roc_auc": 0.8074,
-    "notes": "Using draft2 notebook as source of truth. Accuracy/ROC-AUC recomputed from the draft2 best-parameter model on the same train/test split."
-  },
-  "source": "draft2.ipynb (authoritative for browser + bundled Python reference)"
+    "accuracy": null,
+    "roc_auc": 0.8028005419739037,
+    "best_params": {
+      "C": 0.01,
+      "class_weight": "balanced",
+      "penalty": "l2"
+    },
+    "notes": "Using draft4 refined model as source of truth; refined features remove HealthBurden, LifestyleScore, and HealthcareAccess."
+  }
 }
