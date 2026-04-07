@@ -1,261 +1,264 @@
+
 const SHOW_METRICS_BADGE = false;
 const DEBUG_METRICS_IN_CONSOLE = false;
 
-const RAW_FEATURES = [
+const QUESTIONNAIRE = [
   {
-    key: "BMI",
-    label: "Body mass index (BMI)",
-    helper: "Adjust the slider to match the person’s BMI.",
-    type: "range",
-    min: 12,
-    max: 60,
-    step: 1,
-    defaultValue: 29,
-    formatter: v => `${v}`
+    title: "Basic Information",
+    note: "These questions capture the person’s background and age category.",
+    fields: [
+      {
+        key: "Sex",
+        label: "What is your gender?",
+        type: "select",
+        defaultValue: 0,
+        options: [
+          { value: 0, label: "Female" },
+          { value: 1, label: "Male" }
+        ],
+        formatter: sexLabel
+      },
+      {
+        key: "Age",
+        label: "What is your age group?",
+        type: "select",
+        defaultValue: 8,
+        options: ageOptions(),
+        formatter: ageLabel
+      },
+      {
+        key: "Education",
+        label: "What is your highest level of education?",
+        type: "select",
+        defaultValue: 5,
+        options: [1, 2, 3, 4, 5, 6].map(v => ({ value: v, label: educationLabel(v) })),
+        formatter: educationLabel
+      },
+      {
+        key: "Income",
+        label: "What is your household income range?",
+        type: "select",
+        defaultValue: 6,
+        options: [1, 2, 3, 4, 5, 6, 7, 8].map(v => ({ value: v, label: incomeLabel(v) })),
+        formatter: incomeLabel
+      }
+    ]
   },
   {
-    key: "GenHlth",
-    label: "How would you rate overall health?",
-    type: "select",
-    defaultValue: 3,
-    options: [
-      { value: 1, label: "Excellent" },
-      { value: 2, label: "Very good" },
-      { value: 3, label: "Good" },
-      { value: 4, label: "Fair" },
-      { value: 5, label: "Poor" }
-    ],
-    formatter: v => genHealthLabel(+v)
+    title: "General Health",
+    note: "These inputs reflect self-reported health status, body size, and mobility.",
+    fields: [
+      {
+        key: "GenHlth",
+        label: "How would you rate your overall health?",
+        type: "select",
+        defaultValue: 3,
+        options: [
+          { value: 1, label: "Excellent" },
+          { value: 2, label: "Very good" },
+          { value: 3, label: "Good" },
+          { value: 4, label: "Fair" },
+          { value: 5, label: "Poor" }
+        ],
+        formatter: genHealthLabel
+      },
+      {
+        key: "BMI",
+        label: "What is your body mass index (BMI)?",
+        helper: "Move the slider to match the person’s BMI.",
+        type: "range",
+        min: 12,
+        max: 60,
+        step: 1,
+        defaultValue: 29,
+        formatter: v => `${v}`
+      },
+      {
+        key: "DiffWalk",
+        label: "Do you have serious difficulty walking or climbing stairs?",
+        type: "select",
+        defaultValue: 0,
+        options: yesNoOptions(),
+        formatter: yesNoLabel
+      }
+    ]
   },
   {
-    key: "DiffWalk",
-    label: "Serious difficulty walking or climbing stairs?",
-    type: "select",
-    defaultValue: 0,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "Sex",
-    label: "Sex",
-    type: "select",
-    defaultValue: 0,
-    options: [
-      { value: 0, label: "Female" },
-      { value: 1, label: "Male" }
-    ],
-    formatter: sexLabel
-  },
-  {
-    key: "Education",
-    label: "Highest education level",
-    type: "select",
-    defaultValue: 5,
-    options: [1,2,3,4,5,6].map(v => ({ value: v, label: educationLabel(v) })),
-    formatter: v => educationLabel(+v)
-  },
-  {
-    key: "Income",
-    label: "Household income bracket",
-    type: "select",
-    defaultValue: 6,
-    options: [1,2,3,4,5,6,7,8].map(v => ({ value: v, label: incomeLabel(v) })),
-    formatter: v => incomeLabel(+v)
-  },
-  {
-    key: "HighBP",
-    label: "Has a doctor ever said they have high blood pressure?",
-    type: "select",
-    defaultValue: 0,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "HighChol",
-    label: "Has a doctor ever said they have high cholesterol?",
-    type: "select",
-    defaultValue: 0,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "HeartDiseaseorAttack",
-    label: "History of heart disease or heart attack",
-    type: "select",
-    defaultValue: 0,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "MentHlth",
-    label: "Days of poor mental health in the last 30 days",
-    type: "range",
-    min: 0,
-    max: 30,
-    step: 1,
-    defaultValue: 4,
-    formatter: v => `${v} days`
-  },
-  {
-    key: "PhysHlth",
-    label: "Days of poor physical health in the last 30 days",
-    type: "range",
-    min: 0,
-    max: 30,
-    step: 1,
-    defaultValue: 5,
-    formatter: v => `${v} days`
-  },
-  {
-    key: "PhysActivity",
-    label: "Any physical activity in the past 30 days?",
-    type: "select",
-    defaultValue: 1,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "Fruits",
-    label: "Usually eats fruit",
-    type: "select",
-    defaultValue: 1,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "Veggies",
-    label: "Usually eats vegetables",
-    type: "select",
-    defaultValue: 1,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "Smoker",
-    label: "Currently smokes every day or some days",
-    type: "select",
-    defaultValue: 0,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "AnyHealthcare",
-    label: "Has any healthcare coverage",
-    type: "select",
-    defaultValue: 1,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "CholCheck",
-    label: "Had a cholesterol check in the past 5 years",
-    type: "select",
-    defaultValue: 1,
-    options: yesNoOptions(),
-    formatter: yesNoLabel
-  },
-  {
-    key: "Age",
-    label: "Age range",
-    type: "select",
-    defaultValue: 9,
-    options: [
-      { value: 1, label: "18–24" },
-      { value: 2, label: "25–29" },
-      { value: 3, label: "30–34" },
-      { value: 4, label: "35–39" },
-      { value: 5, label: "40–44" },
-      { value: 6, label: "45–49" },
-      { value: 7, label: "50–54" },
-      { value: 8, label: "55–59" },
-      { value: 9, label: "60–64" },
-      { value: 10, label: "65–69" },
-      { value: 11, label: "70–74" },
-      { value: 12, label: "75–79" },
-      { value: 13, label: "80+" }
-    ],
-    formatter: v => ageLabel(+v)
+    title: "Cardiovascular Health",
+    note: "These questions support the refined cardiovascular risk feature.",
+    fields: [
+      {
+        key: "HighBP",
+        label: "Have you ever been diagnosed with high blood pressure?",
+        type: "select",
+        defaultValue: 0,
+        options: yesNoOptions(),
+        formatter: yesNoLabel
+      },
+      {
+        key: "HighChol",
+        label: "Have you ever been diagnosed with high cholesterol?",
+        type: "select",
+        defaultValue: 0,
+        options: yesNoOptions(),
+        formatter: yesNoLabel
+      },
+      {
+        key: "HeartDiseaseorAttack",
+        label: "Have you ever been diagnosed with heart disease or had a heart attack?",
+        type: "select",
+        defaultValue: 0,
+        options: yesNoOptions(),
+        formatter: yesNoLabel
+      }
+    ]
   }
 ];
 
+const CATEGORY_META = {
+  "General Health": {
+    icon: "●",
+    caption: "Overall health, body composition, and age-related risk signals."
+  },
+  "Heart & Metabolic Health": {
+    icon: "♥",
+    caption: "Cardiovascular and metabolic history linked to diabetes risk."
+  },
+  "Lifestyle & Function": {
+    icon: "↗",
+    caption: "Mobility and everyday physical functioning."
+  },
+  "Preventive Awareness": {
+    icon: "✓",
+    caption: "Signals linked to access, prevention, and long-term health awareness."
+  }
+};
+
 let MODEL_META = null;
 
-Promise.all([d3.json("data/model_meta.json")]).then(([meta]) => {
-  MODEL_META = meta;
-  init(meta);
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadModelMeta();
+  renderQuestionnaire();
+  wireEvents();
+  updatePredictor();
 });
 
-function init(meta) {
-  const metricsText = `Accuracy ${fmtPct(meta.metrics.accuracy)} · ROC-AUC ${meta.metrics.roc_auc}`;
-  document.getElementById("modelMetrics").textContent = SHOW_METRICS_BADGE ? metricsText : "";
-  if (DEBUG_METRICS_IN_CONSOLE) console.log(metricsText);
+async function loadModelMeta() {
+  MODEL_META = await fetch("data/model_meta.json").then(r => r.json());
 
-  buildRawInputs();
+  const metrics = MODEL_META.metrics || {};
+  const badge = document.getElementById("modelMetrics");
+
+  if (SHOW_METRICS_BADGE && badge && metrics.accuracy != null && metrics.roc_auc != null) {
+    badge.textContent = `Accuracy ${(metrics.accuracy * 100).toFixed(1)}% · ROC-AUC ${metrics.roc_auc.toFixed(4)}`;
+    badge.style.display = "block";
+  } else if (badge) {
+    badge.style.display = "none";
+  }
+
+  if (DEBUG_METRICS_IN_CONSOLE && metrics.accuracy != null && metrics.roc_auc != null) {
+    console.log(`Accuracy ${(metrics.accuracy * 100).toFixed(1)}% · ROC-AUC ${metrics.roc_auc.toFixed(4)}`);
+  }
+}
+
+function wireEvents() {
+  document.querySelectorAll("#rawInputs select, #rawInputs input").forEach(el => {
+    el.addEventListener("input", event => {
+      updateFieldDisplay(event.target);
+      updatePredictor();
+    });
+    el.addEventListener("change", event => {
+      updateFieldDisplay(event.target);
+      updatePredictor();
+    });
+  });
+
   document.getElementById("resetDefaults").addEventListener("click", () => {
-    RAW_FEATURES.forEach(feature => {
-      const el = document.getElementById(feature.key);
-      el.value = feature.defaultValue;
-      syncDisplayValue(feature.key, feature.defaultValue);
+    QUESTIONNAIRE.flatMap(section => section.fields).forEach(field => {
+      const el = document.getElementById(`field-${field.key}`);
+      if (!el) return;
+      el.value = field.defaultValue;
+      updateFieldDisplay(el);
     });
     updatePredictor();
   });
-  updatePredictor();
 }
 
-function buildRawInputs() {
-  const container = document.getElementById("rawInputs");
-  container.innerHTML = RAW_FEATURES.map(feature => renderInputCard(feature)).join("");
+function renderQuestionnaire() {
+  const host = document.getElementById("rawInputs");
+  host.innerHTML = QUESTIONNAIRE.map(section => `
+    <section class="questionnaire-group">
+      <h3>${section.title}</h3>
+      <p class="group-note">${section.note}</p>
+      <div class="group-fields">
+        ${section.fields.map(renderField).join("")}
+      </div>
+    </section>
+  `).join("");
 
-  RAW_FEATURES.forEach(feature => {
-    const el = document.getElementById(feature.key);
-    const eventName = feature.type === "range" ? "input" : "change";
-    el.addEventListener(eventName, () => {
-      syncDisplayValue(feature.key, el.value);
-      updatePredictor();
-    });
-    syncDisplayValue(feature.key, feature.defaultValue);
+  QUESTIONNAIRE.flatMap(section => section.fields).forEach(field => {
+    const el = document.getElementById(`field-${field.key}`);
+    if (el) updateFieldDisplay(el);
   });
 }
 
-function renderInputCard(feature) {
-  const displayValue = formatDisplay(feature, feature.defaultValue);
-  const helper = feature.helper ? `<div class="helper-text">${feature.helper}</div>` : "";
-  if (feature.type === "range") {
+function renderField(field) {
+  if (field.type === "range") {
     return `
-      <div class="input-card">
-        <div class="value-line">
-          <strong>${feature.label}</strong>
-          <span id="${feature.key}-value">${displayValue}</span>
+      <div class="field full">
+        <label for="field-${field.key}">${field.label}</label>
+        ${field.helper ? `<div class="helper">${field.helper}</div>` : ""}
+        <div class="range-shell">
+          <div class="range-top">
+            <span>Current value</span>
+            <span class="range-value" id="display-${field.key}">${field.formatter(field.defaultValue)}</span>
+          </div>
+          <input
+            id="field-${field.key}"
+            data-key="${field.key}"
+            type="range"
+            min="${field.min}"
+            max="${field.max}"
+            step="${field.step}"
+            value="${field.defaultValue}"
+          />
+          <div class="range-ticks">
+            <span>${field.min}</span>
+            <span>${field.max}</span>
+          </div>
         </div>
-        ${helper}
-        <input type="range" id="${feature.key}" min="${feature.min}" max="${feature.max}" step="${feature.step}" value="${feature.defaultValue}" />
       </div>
     `;
   }
 
   return `
-    <div class="input-card">
-      <div class="value-line stacked-line">
-        <strong>${feature.label}</strong>
-        <span id="${feature.key}-value">${displayValue}</span>
-      </div>
-      ${helper}
-      <select id="${feature.key}">
-        ${feature.options.map(option => `<option value="${option.value}" ${+option.value === +feature.defaultValue ? "selected" : ""}>${option.label}</option>`).join("")}
+    <div class="field">
+      <label for="field-${field.key}">${field.label}</label>
+      ${field.helper ? `<div class="helper">${field.helper}</div>` : ""}
+      <select id="field-${field.key}" data-key="${field.key}">
+        ${field.options.map(opt => `
+          <option value="${opt.value}" ${+opt.value === +field.defaultValue ? "selected" : ""}>
+            ${opt.label}
+          </option>
+        `).join("")}
       </select>
     </div>
   `;
 }
 
-function syncDisplayValue(featureKey, value) {
-  const feature = RAW_FEATURES.find(d => d.key === featureKey);
-  document.getElementById(`${featureKey}-value`).textContent = formatDisplay(feature, value);
+function updateFieldDisplay(el) {
+  const key = el.dataset.key;
+  const field = QUESTIONNAIRE.flatMap(section => section.fields).find(f => f.key === key);
+  if (!field || field.type !== "range") return;
+  const target = document.getElementById(`display-${key}`);
+  if (target) target.textContent = field.formatter(el.value);
 }
 
 function getRawInputs() {
   const raw = {};
-  RAW_FEATURES.forEach(feature => {
-    raw[feature.key] = +document.getElementById(feature.key).value;
+  QUESTIONNAIRE.flatMap(section => section.fields).forEach(field => {
+    const el = document.getElementById(`field-${field.key}`);
+    raw[field.key] = Number(el.value);
   });
   return raw;
 }
@@ -269,25 +272,18 @@ function engineerFeatures(raw) {
     Education: raw.Education,
     Income: raw.Income,
     CardioRisk: raw.HighBP + raw.HighChol + raw.HeartDiseaseorAttack,
-    HealthBurden: raw.MentHlth + raw.PhysHlth,
-    LifestyleScore: raw.PhysActivity + raw.Fruits + raw.Veggies - raw.Smoker,
-    HealthcareAccess: raw.AnyHealthcare + raw.CholCheck,
     AgeGroup: raw.Age <= 4 ? 0 : raw.Age <= 8 ? 1 : 2
   };
 }
 
 function buildPatientData(raw, engineered, meta) {
-  const patientData = { ...meta.defaults };
+  const patientData = { ...(meta.defaults || {}) };
+
   patientData.CardioRisk = engineered.CardioRisk;
-  patientData.HealthBurden = engineered.HealthBurden;
-  patientData.LifestyleScore = engineered.LifestyleScore;
-  patientData.HealthcareAccess = engineered.HealthcareAccess;
   patientData.AgeGroup = engineered.AgeGroup;
 
   meta.features.forEach(feature => {
-    if (feature in raw) {
-      patientData[feature] = raw[feature];
-    }
+    if (feature in raw) patientData[feature] = raw[feature];
   });
 
   return patientData;
@@ -303,15 +299,10 @@ function scaleFeatures(features, meta) {
 
 function computeLogit(scaled, meta) {
   let logit = meta.intercept;
-  const contributions = [];
-
   meta.features.forEach(feature => {
-    const contribution = scaled[feature] * meta.coefficients[feature];
-    logit += contribution;
-    contributions.push({ feature, value: contribution });
+    logit += scaled[feature] * meta.coefficients[feature];
   });
-
-  return { logit, contributions };
+  return logit;
 }
 
 function computeProbability(logit) {
@@ -319,21 +310,23 @@ function computeProbability(logit) {
 }
 
 function updatePredictor() {
+  if (!MODEL_META) return;
+
   const raw = getRawInputs();
   const engineered = engineerFeatures(raw);
   const patientData = buildPatientData(raw, engineered, MODEL_META);
   const scaled = scaleFeatures(patientData, MODEL_META);
-  const { logit, contributions } = computeLogit(scaled, MODEL_META);
+  const logit = computeLogit(scaled, MODEL_META);
   const probability = computeProbability(logit);
 
   renderProbability(probability);
-  renderRecommendations(raw, probability, contributions);
+  renderRecommendations(raw, probability);
 }
 
 function renderProbability(probability) {
-  document.getElementById("riskValue").textContent = fmtPct(probability);
+  const level = getRiskMeta(probability);
 
-  const level = getRiskLevel(probability);
+  document.getElementById("riskValue").textContent = fmtPct(probability);
   const pill = document.getElementById("riskLevel");
   pill.textContent = level.label;
   pill.style.background = level.soft;
@@ -341,16 +334,6 @@ function renderProbability(probability) {
 
   document.getElementById("riskExplanation").textContent = level.explanation;
   drawGauge(probability, level);
-}
-
-function getRiskLevel(probability) {
-  if (probability < 0.30) {
-    return { label: "Low risk", color: "#4f8f6b", soft: "#ecf7f0", explanation: "The current profile falls in the low-risk band. Focus on prevention and keeping healthy habits consistent." };
-  }
-  if (probability < 0.60) {
-    return { label: "Medium risk", color: "#bf7d22", soft: "#fff4e3", explanation: "The current profile falls in the medium-risk band. A few factors may be worth improving or monitoring more closely." };
-  }
-  return { label: "High risk", color: "#c76666", soft: "#fbefef", explanation: "The current profile falls in the high-risk band. Closer follow-up and targeted lifestyle or clinical support may be helpful." };
 }
 
 function drawGauge(probability, level) {
@@ -363,101 +346,218 @@ function drawGauge(probability, level) {
   const cx = width / 2;
   const cy = height / 2;
   const radius = size * 0.35;
-  const thickness = 18;
-  const fullArc = d3.arc().innerRadius(radius - thickness).outerRadius(radius).cornerRadius(18);
-  const progressAngle = Math.PI * 2 * probability;
+  const ringWidth = Math.max(16, size * 0.07);
 
-  const g = svg.append("g").attr("transform", `translate(${cx},${cy})`);
+  svg.attr("viewBox", `0 0 ${width} ${height}`);
 
-  g.append("path")
-    .attr("d", fullArc({ startAngle: 0, endAngle: Math.PI * 2 }))
-    .attr("fill", "#e6edf7");
+  const background = d3.arc()
+    .innerRadius(radius - ringWidth)
+    .outerRadius(radius)
+    .startAngle(-Math.PI / 2)
+    .endAngle(1.5 * Math.PI);
 
-  g.append("path")
-    .attr("d", fullArc({ startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 + progressAngle }))
+  const foreground = d3.arc()
+    .innerRadius(radius - ringWidth)
+    .outerRadius(radius)
+    .startAngle(-Math.PI / 2)
+    .endAngle(-Math.PI / 2 + (Math.PI * 2 * probability));
+
+  const group = svg.append("g").attr("transform", `translate(${cx}, ${cy})`);
+
+  group.append("path")
+    .attr("d", background())
+    .attr("fill", "#e7eef8");
+
+  group.append("path")
+    .attr("d", foreground())
     .attr("fill", level.color);
 
-  g.append("circle")
-    .attr("r", radius - thickness - 10)
+  group.append("circle")
+    .attr("r", radius - ringWidth - 10)
     .attr("fill", "#ffffff");
-
-  g.append("circle")
-    .attr("r", radius + 10)
-    .attr("fill", "none")
-    .attr("stroke", level.color)
-    .attr("stroke-opacity", 0.12)
-    .attr("stroke-width", 10);
 }
 
-function getRecommendations(input) {
-  const recs = [];
-
-  if (input.BMI > 30) recs.push("BMI is high: consider weight management.");
-  else if (input.BMI < 18.5) recs.push("BMI is low: consider improving nutrition.");
-
-  if (input.HighBP === 1) recs.push("High blood pressure detected: monitor regularly.");
-  if (input.HighChol === 1) recs.push("High cholesterol detected: improve diet and check regularly.");
-  if (input.CholCheck === 0) recs.push("No recent cholesterol check: consider screening.");
-  if (input.Smoker === 1) recs.push("Smoking increases health risk: consider quitting.");
-  if (input.HeartDiseaseorAttack === 1) recs.push("Heart condition detected: manage cardiovascular health carefully.");
-  if (input.PhysActivity === 0) recs.push("Low physical activity: increase exercise if appropriate.");
-  if (input.Fruits === 0) recs.push("Low fruit intake: consider a more balanced diet.");
-  if (input.Veggies === 0) recs.push("Low vegetable intake: increasing fiber intake may help.");
-  if (input.AnyHealthcare === 0) recs.push("No healthcare coverage: consider access to medical services.");
-  if (input.GenHlth >= 4) recs.push("Poor general health reported: consider a comprehensive health check.");
-  if (input.MentHlth > 10) recs.push("Mental health burden detected: consider stress management or support.");
-  if (input.PhysHlth > 10) recs.push("Physical health burden detected: consider medical consultation.");
-  if (input.DiffWalk === 1) recs.push("Mobility difficulty reported: consider physical therapy or movement support.");
-  if (input.Age >= 9) recs.push("Older age group: regular health monitoring is recommended.");
-  if (input.Education <= 3) recs.push("Preventive health education may be helpful for this profile.");
-  if (input.Income <= 3) recs.push("Lower income group: access to healthcare may be more limited.");
-
-  return recs;
+function getRiskLevel(prob) {
+  if (prob < 0.3) return "low";
+  if (prob < 0.6) return "medium";
+  return "high";
 }
 
-function renderRecommendations(raw, probability, contributions) {
-  const items = getRecommendations(raw);
+function getRiskMeta(probability) {
+  const riskLevel = getRiskLevel(probability);
 
-  const topDrivers = contributions
-    .slice()
-    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
-    .slice(0, 2)
-    .map(d => featureDisplayName(d.feature));
-
-  if (probability >= 0.6 && topDrivers.length) {
-    items.unshift(`The model currently sees ${topDrivers.join(" and ")} as major drivers of risk for this profile.`);
-  } else if (probability >= 0.3 && topDrivers.length) {
-    items.unshift(`The current estimate is being shaped most strongly by ${topDrivers.join(" and ")}.`);
+  if (riskLevel === "low") {
+    return {
+      key: riskLevel,
+      label: "Low risk",
+      color: "#4f8f6b",
+      soft: "#edf8f1",
+      explanation: "The current profile falls in the low-risk band. Focus on prevention and maintaining healthy routines."
+    };
   }
-
-  if (items.length === 0) {
-    items.push("No strong recommendation rule fired. Keep healthy routines stable and continue routine preventive care.");
+  if (riskLevel === "medium") {
+    return {
+      key: riskLevel,
+      label: "Medium risk",
+      color: "#c98a26",
+      soft: "#fff6e4",
+      explanation: "The current profile falls in the medium-risk band. A few factors may benefit from closer attention or monitoring."
+    };
   }
-
-  const container = document.getElementById("recommendationList");
-  container.innerHTML = items.map((item, idx) => `
-    <div class="rec-item">
-      <div class="rec-badge">${idx + 1}</div>
-      <p>${item}</p>
-    </div>
-  `).join("");
-}
-
-function featureDisplayName(feature) {
-  const map = {
-    BMI: "BMI",
-    GenHlth: "general health",
-    DiffWalk: "mobility difficulty",
-    Sex: "sex",
-    Education: "education",
-    Income: "income",
-    CardioRisk: "cardiovascular risk history",
-    HealthBurden: "mental and physical health burden",
-    LifestyleScore: "lifestyle pattern",
-    HealthcareAccess: "healthcare access",
-    AgeGroup: "age group"
+  return {
+    key: riskLevel,
+    label: "High risk",
+    color: "#c76666",
+    soft: "#fdf0f0",
+    explanation: "The current profile falls in the high-risk band. Preventive action and follow-up may be more important for this profile."
   };
-  return map[feature] || feature;
+}
+
+function getSummary(prob) {
+  const riskLevel = getRiskLevel(prob);
+
+  if (riskLevel === "low") {
+    return "Your current profile suggests a relatively low level of risk. Maintaining your current habits can help support long-term health.";
+  }
+  if (riskLevel === "medium") {
+    return "Your current profile falls in a moderate risk range. A few areas may benefit from attention or monitoring.";
+  }
+  return "Your current profile indicates a higher level of risk. It may be important to pay closer attention to your health and consider preventive actions.";
+}
+
+function toneAdjust(text, riskLevel) {
+  if (riskLevel === "low") {
+    return text
+      .replaceAll("may help", "can help maintain")
+      .replaceAll("may support", "can help support")
+      .replaceAll("may be helpful", "can help")
+      .replaceAll("may be beneficial", "can support maintaining")
+      .replaceAll("important", "helpful");
+  }
+
+  if (riskLevel === "high") {
+    return text
+      .replaceAll("may help", "it is important to help")
+      .replaceAll("may support", "it is important to support")
+      .replaceAll("may be helpful", "it is strongly recommended to")
+      .replaceAll("may be beneficial", "it is strongly recommended to")
+      .replaceAll("can be helpful", "it is important to consider")
+      .replaceAll("important", "important");
+  }
+
+  return text;
+}
+
+function getRecommendations(input, prob) {
+  const riskLevel = getRiskLevel(prob);
+  const summary = getSummary(prob);
+
+  const recs = {
+    "General Health": [],
+    "Heart & Metabolic Health": [],
+    "Lifestyle & Function": [],
+    "Preventive Awareness": []
+  };
+
+  if (input.BMI > 30) {
+    let text = "Your BMI is on the higher side. Small, consistent changes in diet and daily activity may support overall health.";
+    recs["General Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.BMI < 18.5) {
+    let text = "Your BMI is relatively low. Maintaining balanced nutrition may support your well-being.";
+    recs["General Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.GenHlth >= 4) {
+    let text = "You reported lower overall health. It may be helpful to consider a general health check-up or gradual lifestyle adjustments.";
+    recs["General Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.Age >= 9) {
+    let text = "As people get older, regular health monitoring becomes increasingly important for prevention and early detection.";
+    recs["General Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.HighBP === 1) {
+    let text = "You indicated high blood pressure. Regular monitoring and maintaining a balanced lifestyle may help manage it.";
+    recs["Heart & Metabolic Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.HighChol === 1) {
+    let text = "You indicated high cholesterol. A heart-healthy diet and regular check-ups may be beneficial.";
+    recs["Heart & Metabolic Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.HeartDiseaseorAttack === 1) {
+    let text = "You reported a history of heart-related conditions. Ongoing medical follow-up and careful health management are important.";
+    recs["Heart & Metabolic Health"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.DiffWalk === 1) {
+    let text = "You indicated some difficulty with mobility. Gentle physical activity or guided exercise may help improve comfort and movement.";
+    recs["Lifestyle & Function"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.Education <= 3) {
+    let text = "Regular health check-ups and preventive care can be helpful for maintaining long-term health.";
+    recs["Preventive Awareness"].push(toneAdjust(text, riskLevel));
+  }
+
+  if (input.Income <= 3) {
+    let text = "Exploring available healthcare resources and preventive services may support your overall health.";
+    recs["Preventive Awareness"].push(toneAdjust(text, riskLevel));
+  }
+
+  return { summary, details: recs, riskLevel };
+}
+
+function renderRecommendations(raw, probability) {
+  const recData = getRecommendations(raw, probability);
+  const level = getRiskMeta(probability);
+
+  const summaryEl = document.getElementById("recommendationSummary");
+  summaryEl.innerHTML = `
+    <div class="summary-topline">
+      <div class="summary-title">Overall guidance</div>
+      <div class="summary-pill" style="background:${level.soft}; color:${level.color};">${level.label}</div>
+    </div>
+    <p>${recData.summary}</p>
+  `;
+
+  const groupsEl = document.getElementById("recommendationGroups");
+  groupsEl.innerHTML = Object.entries(recData.details).map(([groupName, items]) => {
+    const meta = CATEGORY_META[groupName];
+    const body = items.length
+      ? `<ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>`
+      : `<div class="rec-empty">No strong signal was triggered in this category for the current profile.</div>`;
+
+    return `
+      <section class="rec-group">
+        <div class="rec-group-header">
+          <div class="rec-group-icon" style="background:${groupTint(groupName).soft}; color:${groupTint(groupName).color};">
+            ${meta.icon}
+          </div>
+          <div>
+            <h3>${groupName}</h3>
+            <p class="group-caption">${meta.caption}</p>
+          </div>
+        </div>
+        ${body}
+      </section>
+    `;
+  }).join("");
+}
+
+function groupTint(groupName) {
+  if (groupName === "General Health") return { color: "#305487", soft: "#edf4ff" };
+  if (groupName === "Heart & Metabolic Health") return { color: "#c76666", soft: "#fdf0f0" };
+  if (groupName === "Lifestyle & Function") return { color: "#4f8f6b", soft: "#edf8f1" };
+  return { color: "#7b5ac8", soft: "#f2edff" };
+}
+
+function fmtPct(value) {
+  return `${(value * 100).toFixed(1)}%`;
 }
 
 function yesNoOptions() {
@@ -476,7 +576,7 @@ function sexLabel(v) {
 }
 
 function genHealthLabel(v) {
-  return ["Excellent", "Very good", "Good", "Fair", "Poor"][v - 1] || `${v}`;
+  return ["Excellent", "Very good", "Good", "Fair", "Poor"][+v - 1] || `${v}`;
 }
 
 function educationLabel(v) {
@@ -488,31 +588,46 @@ function educationLabel(v) {
     5: "Some college or technical school",
     6: "College graduate"
   };
-  return map[v] || `${v}`;
+  return map[+v] || `${v}`;
 }
 
 function incomeLabel(v) {
   const map = {
     1: "Less than $10,000",
-    2: "$10,000–$15,000",
-    3: "$15,000–$20,000",
-    4: "$20,000–$25,000",
-    5: "$25,000–$35,000",
-    6: "$35,000–$50,000",
-    7: "$50,000–$75,000",
+    2: "$10,000–$14,999",
+    3: "$15,000–$19,999",
+    4: "$20,000–$24,999",
+    5: "$25,000–$34,999",
+    6: "$35,000–$49,999",
+    7: "$50,000–$74,999",
     8: "$75,000 or more"
   };
-  return map[v] || `${v}`;
+  return map[+v] || `${v}`;
+}
+
+function ageOptions() {
+  const labels = {
+    1: "18–24",
+    2: "25–29",
+    3: "30–34",
+    4: "35–39",
+    5: "40–44",
+    6: "45–49",
+    7: "50–54",
+    8: "55–59",
+    9: "60–64",
+    10: "65–69",
+    11: "70–74",
+    12: "75–79",
+    13: "80 or older"
+  };
+
+  return Object.entries(labels).map(([value, label]) => ({
+    value: Number(value),
+    label
+  }));
 }
 
 function ageLabel(v) {
-  return (RAW_FEATURES.find(f => f.key === "Age")?.options.find(opt => +opt.value === +v)?.label) || `${v}`;
-}
-
-function formatDisplay(feature, value) {
-  return feature.formatter ? feature.formatter(value) : `${value}`;
-}
-
-function fmtPct(v) {
-  return `${(v * 100).toFixed(1)}%`;
+  return (ageOptions().find(opt => opt.value === +v) || {}).label || `${v}`;
 }
