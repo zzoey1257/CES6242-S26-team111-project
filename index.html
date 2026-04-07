@@ -3,33 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Team 111 — Diabetes Probability Predictor</title>
+    <title>Team 111 — Diabetes Risk Predictor</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
   </head>
   <body>
     <div class="page-shell">
       <header class="topbar">
-        <div>
+        <div class="brand-block">
           <div class="eyebrow">Team 111 · CSE6242</div>
-          <h1>Interactive Diabetes Probability Predictor</h1>
+          <h1>Diabetes Risk Predictor</h1>
           <p class="lede">
-            A presentation-ready risk estimator using the current JavaScript +
-            D3 implementation.
+            A simple screening experience built from our refined logistic
+            regression model.
           </p>
         </div>
-        <div class="meta" id="modelMetrics"></div>
+        <div class="meta" id="modelMetrics" aria-hidden="true"></div>
       </header>
 
       <main class="layout predictor-layout">
         <section class="card form-panel">
-          <div class="section-head stacked section-head-compact">
-            <div>
-              <h2>1. Profile inputs</h2>
-              <p>
-                Enter the person’s health profile using clear, everyday
-                questions.
-              </p>
+          <div class="panel-top">
+            <div class="panel-title-wrap">
+              <div class="panel-kicker">Questionnaire</div>
+              <h2>Health profile</h2>
+              <p>Answer a few short questions to update the estimate.</p>
             </div>
             <button id="resetDefaults" class="ghost-btn">Reset</button>
           </div>
@@ -39,10 +37,11 @@
 
         <section class="results-column">
           <section class="card risk-panel polished-panel">
-            <div class="section-head stacked-sm">
-              <div>
-                <h2>2. Predicted probability</h2>
-                <p>The estimate updates instantly as the profile changes.</p>
+            <div class="panel-top compact">
+              <div class="panel-title-wrap">
+                <div class="panel-kicker">Result</div>
+                <h2>Estimated probability</h2>
+                <p>Current prediction based on the refined draft4 model.</p>
               </div>
             </div>
 
@@ -51,8 +50,10 @@
                 <div class="gauge-wrap ring-wrap">
                   <svg id="gaugeChart"></svg>
                   <div class="gauge-center">
-                    <div class="risk-value" id="riskValue">--</div>
-                    <div class="risk-label-pill" id="riskLevel">--</div>
+                    <div class="gauge-center-stack">
+                      <div class="risk-value" id="riskValue">--</div>
+                      <div class="risk-label-pill" id="riskLevel">--</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -61,18 +62,22 @@
                 <div class="summary-card full-span emphasis-card">
                   <div class="summary-label">Risk interpretation</div>
                   <div class="summary-note" id="riskExplanation">
-                    Complete the profile to view an estimate.
+                    Complete the questionnaire to view the result.
                   </div>
                 </div>
+
                 <div class="risk-scale polished-scale">
                   <div class="scale-item">
-                    <span class="dot low"></span> Low: &lt; 30%
+                    <span class="dot low"></span>
+                    <span>Low risk: under 30%</span>
                   </div>
                   <div class="scale-item">
-                    <span class="dot mid"></span> Medium: 30%–60%
+                    <span class="dot mid"></span>
+                    <span>Medium risk: 30% to 60%</span>
                   </div>
                   <div class="scale-item">
-                    <span class="dot high"></span> High: &gt; 60%
+                    <span class="dot high"></span>
+                    <span>High risk: above 60%</span>
                   </div>
                 </div>
               </div>
@@ -80,21 +85,28 @@
           </section>
 
           <section class="card recommendation-panel polished-panel">
-            <div class="section-head stacked-sm">
-              <div>
-                <h2>3. Recommendations</h2>
+            <div class="panel-top compact">
+              <div class="panel-title-wrap">
+                <div class="panel-kicker">Guidance</div>
+                <h2>Recommendations</h2>
                 <p>
-                  Helpful next-step suggestions based on the current profile.
+                  Suggestions are grouped from the questionnaire responses only.
                 </p>
               </div>
             </div>
-            <div id="recommendationList" class="recommendation-list"></div>
+
+            <div
+              class="recommendation-summary"
+              id="recommendationSummary"
+            ></div>
+            <div id="recommendationGroups" class="recommendation-groups"></div>
           </section>
         </section>
       </main>
 
-      <footer>Team 111 - Diabetes Probability Predictor</footer>
+      <footer>Team 111 · refined draft4 predictor</footer>
     </div>
+
     <script src="app.js"></script>
   </body>
 </html>
