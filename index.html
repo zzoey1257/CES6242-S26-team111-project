@@ -8,46 +8,53 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
   </head>
   <body>
-    <div class="page-shell">
-      <header class="topbar">
-        <div class="brand-block">
-          <div class="eyebrow">Team 111 · CSE6242</div>
-          <h1>Diabetes Risk Dashboard</h1>
-          <p class="lede">
-            A simple screening experience built from our refined logistic
-            regression model.
+    <div class="poster-shell">
+      <header class="hero">
+        <div class="hero-strip"></div>
+
+        <div class="hero-top">
+          <div class="hero-badge">TEAM 111 · CSE6242</div>
+        </div>
+
+        <div class="hero-main">
+          <h1>Interactive Diabetes Risk Dashboard</h1>
+          <p class="hero-subtitle">
+            Explore how demographic and health indicators relate to estimated
+            diabetes risk through an interpretable model.
           </p>
         </div>
-        <div class="meta" id="modelMetrics" aria-hidden="true"></div>
       </header>
 
-      <main class="layout predictor-layout">
-        <section class="card form-panel">
-          <div class="panel-top">
-            <div class="panel-title-wrap">
-              <div class="panel-kicker">Questionnaire</div>
-              <h2>Health profile</h2>
-              <p>Answer a few short questions to update the estimate.</p>
+      <main class="dashboard-grid">
+        <section class="panel panel-form">
+          <div class="panel-header">
+            <div>
+              <div class="panel-tag">Dashboard Interface</div>
+              <h2>Health Profile Questionnaire</h2>
+              <p>
+                Choose a profile using the form below. The model estimate
+                updates instantly.
+              </p>
             </div>
-            <button id="resetDefaults" class="ghost-btn">Reset</button>
+            <button id="resetDefaults" class="reset-btn">Reset</button>
           </div>
 
           <div id="rawInputs" class="raw-inputs"></div>
         </section>
 
-        <section class="results-column">
-          <section class="card risk-panel polished-panel">
-            <div class="panel-top compact">
-              <div class="panel-title-wrap">
-                <div class="panel-kicker">Result</div>
-                <h2>Estimated probability</h2>
-                <p>Current prediction based on the refined draft4 model.</p>
+        <section class="right-column">
+          <section class="panel panel-risk">
+            <div class="panel-header compact">
+              <div>
+                <div class="panel-tag">Result</div>
+                <h2>Estimated Probability</h2>
+                <p>Risk estimate from the logistic regression model.</p>
               </div>
             </div>
 
-            <div class="risk-hero ring-hero">
-              <div class="ring-card">
-                <div class="gauge-wrap ring-wrap">
+            <div class="risk-layout">
+              <div class="risk-visual-box">
+                <div class="gauge-wrap">
                   <svg id="gaugeChart"></svg>
                   <div class="gauge-center">
                     <div class="gauge-center-stack">
@@ -58,24 +65,24 @@
                 </div>
               </div>
 
-              <div class="risk-summary simple-summary">
-                <div class="summary-card full-span emphasis-card">
-                  <div class="summary-label">Risk interpretation</div>
+              <div class="risk-side">
+                <div class="risk-interpret-box">
+                  <div class="mini-title">Risk Interpretation</div>
                   <div class="summary-note" id="riskExplanation">
-                    Complete the questionnaire to view the result.
+                    Complete the questionnaire to view the current result.
                   </div>
                 </div>
 
-                <div class="risk-scale polished-scale">
-                  <div class="scale-item">
+                <div class="risk-legend">
+                  <div class="legend-row">
                     <span class="dot low"></span>
                     <span>Low risk: under 30%</span>
                   </div>
-                  <div class="scale-item">
+                  <div class="legend-row">
                     <span class="dot mid"></span>
                     <span>Medium risk: 30% to 60%</span>
                   </div>
-                  <div class="scale-item">
+                  <div class="legend-row">
                     <span class="dot high"></span>
                     <span>High risk: above 60%</span>
                   </div>
@@ -84,10 +91,10 @@
             </div>
           </section>
 
-          <section class="card recommendation-panel polished-panel">
-            <div class="panel-top compact">
-              <div class="panel-title-wrap">
-                <div class="panel-kicker">Guidance</div>
+          <section class="panel panel-recommendation">
+            <div class="panel-header compact">
+              <div>
+                <div class="panel-tag">Personalized Guidance</div>
                 <h2>Recommendations</h2>
                 <p>
                   Suggestions are grouped from the questionnaire responses only.
@@ -104,7 +111,7 @@
         </section>
       </main>
 
-      <footer>Team 111 · refined draft4 predictor</footer>
+      <footer class="footer-note">TEAM 111 · CSE6242</footer>
     </div>
 
     <script src="app.js"></script>
